@@ -1,0 +1,59 @@
+Pour le  faire manuellement :
+
+1er Etape : Creer le dossier soit meme sans passer par nest car on a pas les droits.
+
+>> mkdir mon-projet-nest
+>> cd mon-projet-nest
+
+2eme Etape : Passer par node.js pour avoir npm >> nest.
+
+3eme Etape : Installation de npm (ou yarn mais je prefere npm)
+
+4eme Etape : Creation des fichiers du projet
+
+>> npm init -y (Va nous creer un fichier package.json pour le bon fonctionnement de l'api)
+
+5eme Etape : Installation des dépendances manuellement
+
+>> npm install --save @nestjs/core @nestjs/common rxjs reflect-metadata
+>> npm install --save-dev typescript ts-node
+
+6eme Etape : Configuration de TypeScript
+
+(A mettre dans le fichier tsconfig.json qui est a creer aussi)
+
+```
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "target": "ES6"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+Étape 7 : Création de fichiers sources et ecritures des modulues/controlleur/service 
+
+(RECUPERER LE MODELE QUE NEST FAIT DEJA, VOIR DOC NEST PAR EXEMPLE)
+
+>> mkdir src
+>> touch app.controller.ts app.service.ts app.module.ts main.ts
+
+app.controller.ts :
+
+
+(Creer les repertoires necessaires pour l'api,pour nous USER)
+
+>> mkdir USER
+>> cd user 
+>> touch user.controller.ts user.service.ts user.module.ts main.ts
+
+
+
+
