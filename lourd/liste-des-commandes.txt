@@ -45,8 +45,48 @@ Pour le  faire manuellement :
 >> mkdir src
 >> touch app.controller.ts app.service.ts app.module.ts main.ts
 
-app.controller.ts :
+app.module.ts :
 
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
+app.controller.ts : 
+
+// src/app.controller.ts
+import { Controller, Get } from '@nestjs/common';
+
+@Controller()
+export class AppController {
+  @Get()
+  getHello(): string {
+    return 'Hello World!';
+  }
+}
+
+app.service.ts :
+
+// src/app.service.ts
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World from the service!';
+  }
+}
+
+
+(FAIRE ATTENTION AU TSCONFIG.TS SINON IL NE RECONNAIS PAS LES DECORATEUR @MODULE ou @INJECTABLE)
+
+Etape 8 : Ecriture du code nest.js a commencer avec USER
 
 (Creer les repertoires necessaires pour l'api,pour nous USER)
 
