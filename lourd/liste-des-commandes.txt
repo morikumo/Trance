@@ -94,6 +94,10 @@ Etape 8 : Ecriture du code nest.js a commencer avec USER
 >> cd user 
 >> touch user.controller.ts user.service.ts user.module.ts main.ts
 
+Etape 9 : Execution de l'application (manuellement)
+
+>> node dist/main.ts
+
 
 
 
