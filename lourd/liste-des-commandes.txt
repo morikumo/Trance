@@ -94,10 +94,35 @@ Etape 8 : Ecriture du code nest.js a commencer avec USER
 >> cd user 
 >> touch user.controller.ts user.service.ts user.module.ts main.ts
 
-Etape 9 : Execution de l'application (manuellement)
+Etape 9 : Execution de l'application (manuellement pour tester)
 
 >> node dist/main.ts
 
+Etape 10 : Créer un module d'authentification
+
+>> cd src
+>> mkdir auth
+>> touch auth.module.ts auth.service.ts auth.controller.ts
+
+Etape 11 : Installation des dépendances liée à l'authentification
+
+>> npm install --save @nestjs/jwt passport passport-jwt
+
+(Remplir le code de chaque fichier auth)
+
+Etape 12 : Création d'un fichier (jwt-auth.guard.ts) pour protéger les routes
+
+>> touch jwt-auth.guard.ts
+
+(Il devra etre remplie selon les routes a protéger qu'elles soient coté authentification que user)
+
+Etape 13 : Créer un module user
+
+>> cd src
+>> mkdir user
+>> touch user.module.ts user.service.ts user.controller.ts
+
+(Dans le controlleur il a été ajouter un protecteur de route pour le user aussi)
 
 
 
