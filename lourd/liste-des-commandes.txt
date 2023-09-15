@@ -160,3 +160,28 @@ Enfin on ajoute au fichier de declaration personnaliser pour rendre le tout acce
 - Etape 15 : On precede doucement a la base donnees
 
 >> npm install prisma --save-dev
+>> npx prisma init --datasource-provider sqlite (Recuperer sur le site de prisma)
+
+Ajout d'un 'model' dans schema.prisma , le model user pour creer une base de donnes user
+
+J'ai ensuite ajouter des model pour 'post' (publications) et auth (authentification) qui permettera d'avoir tout ca en db
+
+* Etape 15.5 : On creer des fichier post.***.ts pour gerer les publications a travers les module deja existant
+
+>> cd src/user/
+>>  touch auth/post.controller.ts auth/post-auth.guard.ts user/post.controller.ts user/post.service.ts user/post.module.ts
+
+(On remplira le code de chacun)
+
+>> npx prisma generate (Pour mettre a jour chaque fois que le code liee a la base de donne change)
+
+- Etape 16 : Ajout d'un dossier dto dans auth, un fichier constant pour le bon fonctionnement de l'auth avec les ajout dans les modules auth en rapport avec la base de donnee
+
+- Etape 17 : Probleme avec la methode findByEmail avec auth.service.ts
+
+(Par consequant je dois ajouter des fichier au modules prisma soit prsima.service.ts et prisma.module.ts)
+
+>> cd prisma 
+>> touch prisma.service.ts prisma.module.ts
+
+(VOIR PROBLEME SUR USER.SERVICE.TS ET PRISMA.SERVICE.TS)
