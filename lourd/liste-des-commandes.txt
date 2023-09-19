@@ -184,4 +184,16 @@ J'ai ensuite ajouter des model pour 'post' (publications) et auth (authentificat
 >> cd prisma 
 >> touch prisma.service.ts prisma.module.ts
 
-(VOIR PROBLEME SUR USER.SERVICE.TS ET PRISMA.SERVICE.TS)
+(Il faut maintenant ajouter a l'include de tsconfig.ts un partie pour la recuperation des dependances prisma soit :)
+
+*Dans le fichier tsconfig.ts a la section include*
+
+>> [...,"prisma/**/*.ts"]
+
+Etape 18 : Testons tous ca ! 
+
+(Dans un premier temps il nous manque une dependances express donc :)
+
+>> npm install @nestjs/platform-express
+>> npm run start:dev
+

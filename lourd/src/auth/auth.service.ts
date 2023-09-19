@@ -1,32 +1,29 @@
-// auth.service.ts
-
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
+import { PrismaClient, User as PrismaUser } from '@prisma/client'; // Importez le modèle User de Prisma
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly prisma: PrismaClient, // Injectez le client Prisma
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userService.findByEmail(email);
-    if (user && user.validatePassword(pass)) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser(email: string, pass: string): Promise<PrismaUser | null> {
+    const user = await this.prisma.user.findUnique({ where: { email } }); // Utilisez Prisma pour trouver l'utilisateur
+    if (user && user.password === pass) {
+      return user;
     }
     return null;
   }
 
   async login(loginUserDto: LoginUserDto) {
-    // Votre logique d'authentification ici (vérification des informations de connexion)
+    const user = await this.validateUser(loginUserDto.email, loginUserDto.password);
 
-    const user = await this.userService.findByEmail(loginUserDto.email);
-
-    if (!user || !user.validatePassword(loginUserDto.password)) {
+    if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -37,8 +34,5 @@ export class AuthService {
     };
   }
 
-  // Ajoutez la méthode findByEmail ici
-  async findByEmail(email: string) {
-    return this.userService.findByEmail(email);
-  }
+  // Vous pouvez supprimer la méthode findByEmail car elle est maintenant intégrée dans validateUser
 }

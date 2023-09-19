@@ -9,6 +9,8 @@ export class PrismaService {
 
 
   getPrismaClient() {
-    return this.prisma;
-  }
+    return this.prisma;}
+
+    getUsers() {
+      return this.prisma.user.findMany();}
 }

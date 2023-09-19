@@ -1,18 +1,15 @@
 // user/user.service.ts
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service'; // Assurez-vous d'importer le service Prisma correspondant
+import { PrismaService } from '../prisma/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async findByEmail(email: string) {
-    return this.prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.getPrismaClient().user.findUnique({ where: { email } });
   }
 
-  // Ajoutez d'autres méthodes pour gérer les utilisateurs ici si nécessaire
+  // Autres méthodes de service...
 }

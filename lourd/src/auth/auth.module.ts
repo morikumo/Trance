@@ -7,9 +7,12 @@ import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../constant'; // Assurez-vous que le chemin est correct ici
+import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
-  imports: [
+  imports: [ 
+    PrismaModule,
     UserModule,
     PassportModule,
     JwtModule.register({
@@ -17,7 +20,8 @@ import { jwtConstants } from '../constant'; // Assurez-vous que le chemin est co
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, PrismaService],
   controllers: [AuthController],
+  exports : [PrismaService],
 })
 export class AuthModule {}
