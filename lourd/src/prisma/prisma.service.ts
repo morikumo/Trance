@@ -1,24 +1,14 @@
-// src/prisma/prisma.service.ts
+// prisma/prisma.service.ts
+
+import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
+@Injectable()
 export class PrismaService {
-  constructor() {
-    if (!prisma.$isConnected()) {
-      prisma.$connect();
-    }
-  }
+  constructor(private readonly prisma: PrismaClient) {}
 
-  async user() {
-    return prisma.user;
-  }
 
-  // Ajoutez d'autres méthodes Prisma nécessaires ici
-
-  async disconnect() {
-    if (prisma.$isConnected()) {
-      await prisma.$disconnect();
-    }
+  getPrismaClient() {
+    return this.prisma;
   }
 }
