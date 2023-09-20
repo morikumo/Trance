@@ -1,45 +1,30 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
-}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String?
-  password String   // Ajoutez un champ pour stocker le mot de passe (vous pouvez également envisager de stocker les mots de passe de manière sécurisée, par exemple en les hachant)
-  // Ajoutez d'autres champs d'authentification si nécessaire, tels que les rôles ou les jetons JWT
+generator client {
+  provider = "prisma-client-js"
+}
 
-  // Définissez une relation avec les publications de l'utilisateur
-  posts    Post[]
+model User {
+  id    Int     @default(autoincrement()) @id
+  email String  @unique
+  name  String?
+  password String?
+  posts Post[]
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
+  id        Int      @default(autoincrement()) @id
   title     String
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  // Ajoutez des relations si nécessaire, par exemple, une relation vers l'utilisateur qui a créé le message
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-
-model Auth {
-  id       Int      @id @default(autoincrement())
-  userId   Int      @unique
-  token    String   @unique
-  expires  DateTime
-  // Ajoutez d'autres champs d'authentification si nécessaire, par exemple, le type de jeton (JWT, OAuth, etc.)
-  // Définissez également des relations avec d'autres modèles au besoin
+  content   String?
+  published Boolean? @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
 }
 

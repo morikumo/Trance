@@ -1,7 +1,6 @@
 // login-user.dto.ts
 
 export class LoginUserDto {
-    readonly email: string;
-    readonly password: string;
-  }
-  
+  readonly email: string = '';
+  readonly password: string = '';
+}

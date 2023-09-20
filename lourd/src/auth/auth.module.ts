@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '../constant'; // Assurez-vous que le chemin est correct ici
 import { PrismaModule } from '../prisma/prisma.module';
 import { PrismaService } from '../prisma/prisma.service';
@@ -20,7 +20,7 @@ import { PrismaService } from '../prisma/prisma.service';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, PrismaService],
+  providers: [AuthService, PrismaService, JwtService],
   controllers: [AuthController],
   exports : [PrismaService],
 })

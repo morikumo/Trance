@@ -197,3 +197,20 @@ Etape 18 : Testons tous ca !
 >> npm install @nestjs/platform-express
 >> npm run start:dev
 
+(Ca n'as pas marcher je me suis donc tourner vers le docker-compose, on verra donc ca plus tard)
+
+Etape 19 : Docker-compose 
+
+(Premierement on recupere les image de postgres et nesjs/cli sur dockerhub pour avoir des images deja faites et prete)
+
+(Ensuite on fait le docker-compose pour connecter nos services de back et de base de donnees, puis)
+
+>> docker-compose up
+
+Etape 20 : Revenons a nos moutons
+
+()
+
+
+
+
