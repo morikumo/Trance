@@ -209,8 +209,5 @@ Etape 19 : Docker-compose
 
 Etape 20 : Revenons a nos moutons
 
-()
-
-
-
+(Le grand probleme est regler grace a la doc de nestjs, maintenant on peut lancer le serveur et tester les routes. !PAR CONTRE IL NE FONCTION QU'AVEC LE DOCKER COMPOSE CAR CONTIENT L'IMAGE DE POSTGRES!)
 
