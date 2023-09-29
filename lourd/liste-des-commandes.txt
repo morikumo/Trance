@@ -211,3 +211,56 @@ Etape 20 : Revenons a nos moutons
 
 (Le grand probleme est regler grace a la doc de nestjs, maintenant on peut lancer le serveur et tester les routes. !PAR CONTRE IL NE FONCTION QU'AVEC LE DOCKER COMPOSE CAR CONTIENT L'IMAGE DE POSTGRES!)
 
+Etape 21 on essaie tout ca donc dans cette ordre : 
+
+>> docker-compose up --build
+>> npm run start:dev
+>> npx prisma studio
+
+Etape 22 : Probleme avec la connectiviter de la base de donnee , probleme citer sur prisma studio
+
+(Lorsque l'on se connecte avec prisma studio pour une interface graphique de la db, il nous parle d'un probleme de recuperation liee a l'output donc :)
+
+On ajoute dans le fichier prisma.schema le code suivant :
+
+>> generator client {
+  >> provider = "prisma-client-js"
+  >> output   = "../node_modules/.prisma/client"
+}
+
+Pour recuperer les dependances prisma-client-js et information client
+
+Puis un soucis de env est apparue donc on a du ajouter la dependences dotenv
+
+>> npm install dotenv
+
+Maintenant on peut lancer le serveur et tester les routes. !PAR CONTRE IL NE FONCTION QU'AVEC LE DOCKER COMPOSE CAR CONTIENT L'IMAGE DE POSTGRES!
+
+>> npx prisma generate
+>> npx prisma migrate dev --name init
+>> npx prisma studio
+
+Etape 23 : On ajoute dans main.ts des elements pour gerer le .env
+
+>> import { config } from 'dotenv';
+>> config();
+
+Etape 24 : il me manquait des dependances liee a postgres donc  :
+
+>> npm install pg 
+>> npm ci (mets a jours les depandances)
+
+Etape 25 : Le probleme de la recuperation de l'env par prisma persistent, de plus l'api ne se lance plus
+
+(Liste des problemes :
+
+- Prisma ne recupere pas l'env
+- L'api ne se lance plus)
+
+(L'api ne se lancait plus parce qu'elle n'arrivait pas a recuperer le prisma/client, car lorsque l'on faisait npx prisma generate generait le client a un endroit citer a cause de l'output, je l'ai donc enlever et j'ai supprimer le node_modules creer par npx prisma generete et laisser l'original)
+
+(Ce probleme etant regler j'essaie de lancer l'api mais avant il faut migrer nos changement avec npx prisma migrate dev, or il y a un probleme, il ne recupere pas l'env)
+
+(Nous avons donc 2 probleme en 1, il faut reussir a connecter l'env pour le lancement de l'api)
+
+(L'api se lance mais le probleme persistent avec prisma studio, donc de retour au meme probleme d'env)
