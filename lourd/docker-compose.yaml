@@ -1,15 +1,21 @@
-version: '3'
+version: '3.3'
 services:
-  Backend:
-    image: nestjs/cli:latest
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: . 
     env_file:
       - .env # environment variables
     environment:
       JWT_SECRET: $JWT_SECRET
     ports:
       - '3000:3000'
+      - '5555:5556'
     depends_on:
       - db
+    networks:
+      - lourd
+    restart: unless-stopped
 
   db:
     image: postgres:latest
@@ -21,3 +27,9 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     ports:
       - '5432:5432'
+    networks:
+      - lourd
+
+networks:
+  lourd:
+    driver: bridge

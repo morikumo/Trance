@@ -22,7 +22,7 @@ async function bootstrap() {
   }); */
 }
 bootstrap();
-/* // Dans votre code
+// Dans votre code
 const dotenv = require('dotenv');
 dotenv.config(); // Charge les variables d'environnement depuis le fichier .env
-console.log(process.env.DATABASE_URL); // Vérifiez si DATABASE_URL est définie */
+console.log(process.env.DATABASE_URL); // Vérifiez si DATABASE_URL est définie
