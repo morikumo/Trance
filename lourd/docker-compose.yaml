@@ -5,12 +5,10 @@ services:
       dockerfile: Dockerfile
       context: . 
     env_file:
-      - .env # environment variables
-    environment:
-      JWT_SECRET: $JWT_SECRET
+      - .env
     ports:
       - '3000:3000'
-      - '5555:5556'
+      - '5555:5555'
     depends_on:
       - db
     networks:
@@ -20,11 +18,7 @@ services:
   db:
     image: postgres:latest
     env_file:
-      - .env # environment variables
-    environment:
-      POSTGRES_DB: $POSTGRES_DB
-      POSTGRES_USER: $POSTGRES_USER
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      - .env
     ports:
       - '5432:5432'
     networks:

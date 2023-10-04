@@ -275,4 +275,4 @@ Etape 27 : On ajoute a schema.prisma une ligne pour les binaryTarget pour que le
 >> binaryTargets = ["native"]
 >> binaryTargets = ["native", "linux-musl-openssl-3.0.x"] // Pour linux, l'erreur persistait donc on ajoute cette ligne
 
-Etape 28 : 
+Etape 28 : Le probleme viendrai du fait du user ou l'on utilise findMany visiblement il ne le reconnait pas, il faut donc le changer par findUnique
