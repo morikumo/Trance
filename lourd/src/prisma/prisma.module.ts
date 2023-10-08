@@ -4,6 +4,7 @@ import { PrismaService } from './prisma.service';
 import { config } from 'dotenv';
 config();
 
+
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],

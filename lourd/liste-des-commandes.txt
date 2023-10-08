@@ -273,6 +273,58 @@ Etape 26 : On veut toujours regler le soucis de l'env on a donc opter pour un do
 Etape 27 : On ajoute a schema.prisma une ligne pour les binaryTarget pour que les runtime de prisma soit compatible avec le runtime de node
 
 >> binaryTargets = ["native"]
->> binaryTargets = ["native", "linux-musl-openssl-3.0.x"] // Pour linux, l'erreur persistait donc on ajoute cette ligne
+>> binaryTargets = ["native", "linux-musl-openssl-3.0.x"] // Pour linux, l'erreur persistait donc on ajoute cette ligne, (Pas obligatoire pour le moment)
 
 Etape 28 : Le probleme viendrai du fait du user ou l'on utilise findMany visiblement il ne le reconnait pas, il faut donc le changer par findUnique
+
+(On va essayer de passer par un script pour enclencher le processus de recuperation de l'env via prisma en faisant migrant les elements juste avant le lancement de celui-ci)
+
+Etape 29 : On a reussi a lancer l'api avec le dockerfile, le probleme de l'env est regler ENFIN 
+(Des explications doivent etre faites pour bien expliquer le processus)
+
+(On va proceder a des explication par étape :
+
+- Etape 1 : On est revenu a l'idée du script pour faire fonctionner l'api 
+
+>> mkdir script
+>> touch script.ts
+
+A l'intérieur on mettra le code suivant :
+
+>> npx prisma generate -schema=../prisma/schema.prisma
+>> npm run start:dev
+>> npx prisma migrate dev --schema=../prisma/schema.prisma
+
+
+- Etape 2 : On va donc modifier le dockerfile pour qu'il puisse lancer le script
+
+Dans le dockerfile on va ajouter :
+
+>> ENTRYPOINT ["sh", "/script.sh"]
+
+Parce qu'aprés avoir copier l'environnement de l'api dans le conteneur, on va lancer le script qui va lancer l'api
+
+- Etape 3 : On met le dockerfile au meme endroit que le docker-compose pour evité les corrélations:
+
+Le grand probleme de l'env était que j'avais plusieurs package.json et plusieurs node_modules. Et comme dans le conteneur on trouvais le meme environnement
+que sur ma machine il ne trouvais pas les dependances, il fallait donc que je mette le dockerfile au meme endroit que le docker-compose pour que le conteneur.
+Mais encore les dépendances était enmelé dans le conteneur comme sur ma machine. Pendant longtemps j'ai cru que c'était docker ou prisma le probleme, mais enfaite
+c'était lors de mes manipulations de npx et du mauvais path de sript et nombreuses erreur que j'ai créées des package.json a tout va et des node_modules a tout va.
+Il se référait donc au mauvais package de dépendances. J'ai donc supprimer les package.json et node_modules qui n'était pas utile et j'ai mis le dockerfile
+au meme endroit que le docker-compose pour que le conteneur puisse trouver les dépendances.
+
+- Etape 4 : On va donc modifier le docker-compose pour qu'il puisse lancer le script
+
+Léger changement dans le docker-compose pour qu'il puisse trouver les path corectement
+
+- Etape 5 : On va donc modifier le script pour qu'il puisse lancer l'api
+
+IL FAUT BIEN QUE POUR LE MOMENT LES MIGRATIONS OIT FAITES APRES NPM RUN START:DEV
+
+Il faut donc que le conteneur soit actif, pour le moment c'est fait de manière manuel mais on va essayer de l'incorporer au script)
+
+Etape 30 : On va crééer un makefile pour automatiser le tout pour facilité le tout
+
+(On va donc creer un fichier makefile a la racine du projet)
+
+(On va automatiser la migrations de depandances prisma aussi,  ainsi que l'automatisation de docker)
