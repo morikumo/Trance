@@ -328,3 +328,9 @@ Etape 30 : On va crééer un makefile pour automatiser le tout pour facilité le
 (On va donc creer un fichier makefile a la racine du projet)
 
 (On va automatiser la migrations de depandances prisma aussi,  ainsi que l'automatisation de docker)
+
+(Voila qui est fait avec notre makefile)
+
+Etape 31 : On passe a la partie service de nos user et commencer l'authentification
+
+(Alors la connexion a notre page web fut difficile le tout a cause du app.module qui n'avait pas les bon contrller/provider/module)

@@ -9,6 +9,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '../constant'; // Assurez-vous que le chemin est correct ici
 import { PrismaModule } from '../prisma/prisma.module';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from '../user/user.service';
 
 @Module({
   imports: [ 
@@ -16,11 +17,11 @@ import { PrismaService } from '../prisma/prisma.service';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_SECRET || jwtConstants.secret,
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, PrismaService, JwtService],
+  providers: [AuthService, PrismaService, JwtService, UserService],
   controllers: [AuthController],
   exports : [PrismaService],
 })

@@ -1,13 +1,10 @@
-import {
-  Controller,
-  Get,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-
-  @Get('Bonjour')
-  getHomePage(): string {
-    return 'Bienvenue sur la page d\'accueil !';
+  @Get()
+  root() {
+    console.log('La route racine est atteinte !'); // Ajoutez cette ligne pour le débogage
+    return 'Hello from NestJS!';
   }
 }

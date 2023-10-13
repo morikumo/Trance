@@ -16,7 +16,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Exposez le port 3000
-EXPOSE 3000
+EXPOSE 3001
 
 COPY ./src/script/script.sh /
 
