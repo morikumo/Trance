@@ -1,15 +1,17 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Redirect } from '@nestjs/common';
 
-@Controller()
+@Controller('Trance')
 export class AppController {
   @Get()
   root() {
-    console.log('La route racine est atteinte !'); // Ajoutez cette ligne pour le débogage
-    return 'Hello from NestJS!';
+    console.log('Trance !'); // Ajoutez cette ligne pour le débogage
+    return 'Bienvenue sur Transcandance !';
   }
-  @Post()
-  post() {
-    console.log('La route continue !'); // Ajoutez cette ligne pour le débogage
-    return 'Hello from Post!';
+
+  @Get('42')
+  @Redirect(process.env.REDIRECT_URL)
+  redirect(){
+    console.log('42 atteint');
+
   }
 }

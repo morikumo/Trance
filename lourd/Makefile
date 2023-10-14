@@ -1,16 +1,11 @@
 # Cible par défaut : docker-compose up --build
 all:
 	terminator -e "docker-compose up --build"
-	(while ! docker ps | grep -q postgres ; do sleep 7; done)
+	(while ! docker ps | grep -q "6 seconds ago" ; do sleep 3; done)
 	npx prisma migrate dev --schema=./src/prisma/schema.prisma
 
+#terminator -e "watch docker ps"
 # Nettoyer le projet : docker-compose down --rmi all --volumes --remove-orphans
-
-api:
-	
-
-clean:
-	signals="INT TERM"; \
 
 fclean:
 	docker-compose down --rmi all --volumes --remove-orphans
