@@ -9,11 +9,30 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthService } from './auth/auth.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { UserModule } from './user/user.module';
+import { PassportModule } from '@nestjs/passport';
+import { AppService } from './app.service';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 
 
 @Module({
-  imports: [PrismaModule, AuthModule],
-  providers: [UserService, PrismaService],
-  controllers: [UserController, AppController],
+  imports: [
+    PrismaModule, UserModule, AuthModule, PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..'),
+    }),
+  ],
+  controllers: [AppController, UserController, AuthController],
+  providers: [
+    PrismaService, AppService, AuthService, UserService, ConfigService, JwtStrategy],
 })
 export class AppModule {}
+

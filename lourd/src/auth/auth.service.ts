@@ -14,7 +14,6 @@ const redirect_url = process.env.URL_REDIRECT;
 
 @Injectable()
 export class AuthService {
-  [x: string]: any;
   constructor(
     private userService: UserService,
     private jwtService: JwtService,

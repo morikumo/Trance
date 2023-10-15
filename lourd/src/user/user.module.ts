@@ -4,11 +4,16 @@ import { UserService } from './user.service';
 import { PrismaModule } from '../prisma/prisma.module'; // Assurez-vous d'importer PrismaModule
 import { UserController } from './user.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { PrismaService } from '../prisma/prisma.service';
+import { JwtStrategy } from '../strategy/jwt.strategy';
 
 @Module({
   controllers: [UserController],
-  imports: [PrismaModule], // N'oubliez pas d'ajouter PrismaModule ici
-  providers: [UserService],
-  exports: [UserService], // Si UserService doit être utilisé à l'extérieur de UserModule
+  imports: [PrismaModule, JwtModule.register({
+    secret: process.env.JWT_SECRET,
+    signOptions: {expiresIn: '1d'},
+  })],
+  providers: [UserService, PrismaService, JwtStrategy],
+  exports: [UserService],
 })
 export class UserModule {}
