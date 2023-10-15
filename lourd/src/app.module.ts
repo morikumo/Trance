@@ -21,7 +21,7 @@ import { join } from 'path';
 
 @Module({
   imports: [
-    PrismaModule, UserModule, AuthModule, PassportModule.register({ defaultStrategy: 'jwt' }),
+    UserModule, PrismaModule, AuthModule, PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },

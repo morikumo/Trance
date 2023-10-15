@@ -1,6 +1,6 @@
 // auth.controller.ts
 
-import { Controller, Post, Body, Get, BadRequestException, Req, Res } from '@nestjs/common';
+import { Controller, Post, Body, Get, BadRequestException, Req, Res, Redirect } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -14,6 +14,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService,
     private prisma: PrismaService,
     private readonly UserService: UserService) {}
+
+    @Get('test')
+    connec(){
+      console.log('42 atteint');
+    }
 
     @Get('login')
     async login(@Req() req: Request, @Res() response: Response): Promise<any> {

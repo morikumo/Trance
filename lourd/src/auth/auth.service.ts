@@ -2,10 +2,10 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, Unauthorize
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Response } from 'express';
-import { PrismaClient, User as PrismaUser, User } from '@prisma/client'; // Importez le modèle User de Prisma
+import { User as User } from '@prisma/client'; // Importez le modèle User de Prisma
 import { config } from 'dotenv';
+import { PrismaService } from '../prisma/prisma.service';
 config();
-
 
 const axios = require('axios');
 const client_id = process.env.UID_42;
@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    private prisma: PrismaClient, // Injectez le client Prisma
+    private prisma: PrismaService, // Injectez le client Prisma
   ) {}
 
   async apiConnexion(userData: any, token: string, res: Response): Promise<User | null> {

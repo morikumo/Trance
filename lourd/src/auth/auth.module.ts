@@ -21,6 +21,7 @@ import { JwtStrategy } from '../strategy/jwt.strategy';
   }),
   UserModule,
   PrismaModule,
+  JwtModule
 ],
   providers: [AuthService, ConfigService, PrismaService, JwtStrategy, UserService],
   exports: [AuthService],
