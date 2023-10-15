@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [UserController],
-  imports: [PrismaModule, JwtModule], // N'oubliez pas d'ajouter PrismaModule ici
+  imports: [PrismaModule], // N'oubliez pas d'ajouter PrismaModule ici
   providers: [UserService],
   exports: [UserService], // Si UserService doit être utilisé à l'extérieur de UserModule
 })

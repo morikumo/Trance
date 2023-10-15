@@ -12,7 +12,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AuthModule],
   providers: [UserService, PrismaService],
   controllers: [UserController, AppController],
 })

@@ -6,6 +6,7 @@ import { PrismaClient, User as PrismaUser, User } from '@prisma/client'; // Impo
 import { config } from 'dotenv';
 config();
 
+
 const axios = require('axios');
 const client_id = process.env.UID_42;
 const clientSecret = process.env.SECRET_42;
@@ -22,7 +23,7 @@ export class AuthService {
 
   async apiConnexion(userData: any, token: string, res: Response): Promise<User | null> {
     try {
-        let user: User;
+        let user: User | null;
         user = await this.userService.findUserByEmail(userData.email);
         if (!user) {
             res.redirect(`` + process.env.URL_LOCAL + `/setNickname?token=${token}`);
@@ -32,7 +33,9 @@ export class AuthService {
                   where: { id: user.id },
                   data: {},
                 })
-                res.redirect(process.env.URL_LOCAL);
+                const newToken = await this.generateAndSetAccessToken(user);
+                res.cookie("accessToken", newToken);
+                res.redirect(process.env.URL_LOCAL + `/`);
             }
         return user;
     } catch {
@@ -40,21 +43,38 @@ export class AuthService {
     }
   }
 
-  async getAccessToken(code: string): Promise<any> {
+
+  async generateAndSetAccessToken(user: User): Promise<string> {
     try {
-        const response = await axios.post(process.env.TOKEN_42, {
-            client_id: client_id,
-            client_secret: clientSecret,
-            grant_type: "authorization_code",
-            code: code,
-            redirect_uri: redirect_url,
-        });
-        const accessToken = response.data.access_token;
-        return accessToken;
+        const jwtPayload = { username: user.name, sub: user.id };
+        const newToken = this.jwtService.sign(jwtPayload);
+        return newToken;
     } catch {
-        throw new HttpException('Failed to retrieve access token', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new BadRequestException();
     }
 }
+
+async getAccessToken(code: string | undefined): Promise<any> {
+  if (code === undefined) {
+      throw new BadRequestException('Code is missing');
+  }
+
+  try {
+      const response = await axios.post(process.env.TOKEN_42, {
+          client_id: client_id,
+          client_secret: clientSecret,
+          grant_type: "authorization_code",
+          code: code,
+          redirect_uri: redirect_url,
+      });
+      const accessToken = response.data.access_token;
+      return accessToken;
+  } catch {
+      throw new HttpException('Failed to retrieve access token', HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+}
+
+
 
 async getUserData(accessToken: string): Promise<any> {
   try {

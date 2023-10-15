@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Redirect } from '@nestjs/common';
 
-@Controller('Trance')
+@Controller()
 export class AppController {
   @Get()
   root() {
@@ -10,8 +10,8 @@ export class AppController {
 
   @Get('42')
   @Redirect(process.env.REDIRECT_URL)
-  redirect(){
+  connect(){
     console.log('42 atteint');
-
+    return(process.env.INTRA_42)
   }
 }
