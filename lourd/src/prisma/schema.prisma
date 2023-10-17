@@ -4,6 +4,7 @@
 generator client {
   provider = "prisma-client-js"
   binaryTargets = ["native"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -11,20 +12,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserState {
+  OFFLINE
+  ONLINE
+}
+
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String? @unique
-  password String?
- // nickname String  @unique
-  posts    Post[]
+  id                Int             @id @default(autoincrement())
+  email             String          @unique
+  name              String          @unique
+  nickname          String          @unique
+  twoFactorSecret   String          @unique
+  twoFactorEnabled  Boolean         @default(false)
+  state             UserState
+  posts             Post[]
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  id                Int             @id @default(autoincrement())
+  title             String
+  content           String?
+  published         Boolean?        @default(false)
+  author            User?           @relation(fields: [authorId], references: [id])
+  authorId          Int?
 }

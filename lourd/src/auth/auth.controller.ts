@@ -7,12 +7,14 @@ import { UserService } from '../user/user.service';
 
 import { Request } from 'express';
 import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService,
     private prisma: PrismaService,
+    private readonly jwtService: JwtService,
     private readonly UserService: UserService) {}
 
     @Get('test')
@@ -22,14 +24,19 @@ export class AuthController {
 
     @Get('login')
     async login(@Req() req: Request, @Res() response: Response): Promise<any> {
+      console.log("Login route hit");
+      const code = req.query.code;
+      console.log("voici la valeur de code : ",code);
+
+      if (!code) {
+        throw new BadRequestException('Code is missing');}
+
       try {
-        const buffer = req.query.code as string;
-        if (buffer === undefined) {
-          throw new BadRequestException('Code is missing');}
-        const accessToken = await this.authService.getAccessToken(buffer);
+        const accessToken = await this.authService.getAccessToken(code);
         const userData = await this.authService.getUserData(accessToken);
         await this.authService.apiConnexion(userData, accessToken, response);
-      } catch {
+      } catch (error){
+        console.error(error);
         throw new BadRequestException();
       }
     }

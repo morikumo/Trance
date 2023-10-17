@@ -1,18 +1,24 @@
 import { Controller, Get, Post, Redirect } from '@nestjs/common';
+import { PrismaService } from './prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class AppController {
-  @Get()
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+  ){}
+  
+/*   @Get()
   root() {
     console.log('Trance !'); // Ajoutez cette ligne pour le débogage
     return 'Bienvenue sur Transcandance !';
   }
-
+ */
   @Get('test')
   @Redirect(process.env.REDIRECT_URL_2)
-  connect2(){
-    console.log('Test fonctionnel');
-    return(process.env.INTRA_42)
+  getConnected(){
+    return(()=> process.env.INTRA_42)
   }
 
   @Get('42')

@@ -18,23 +18,22 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  password: string;
 }
  */
 
 export class CreateUserDto {
     /* private */ name: string;
     /* private */ email: string;
-    /* private */ password: string;
     /* private */ nickname: string;
     /* private */ id: number;
+                  state;
   
     constructor(userData: any) {
       this.name = userData.name;
       this.email = userData.email;
-      this.password = userData.password;
       this.nickname = userData.nickname;
       this.id = userData.id;
+      this.state = userData.state;
     }
   
     getName(): string {
@@ -48,17 +47,13 @@ export class CreateUserDto {
     getEmail(): string {
       return this.email;
     }
+
+    getState() {
+      return this.state;
+    }
   
     setEmail(email: string): void {
       this.email = email;
-    }
-  
-    getPassword(): string {
-      return this.password;
-    }
-  
-    setPassword(password: string): void {
-      this.password = password;
     }
   
     getId(): number {
@@ -76,5 +71,6 @@ export class CreateUserDto {
     setNickname(nickname: string): void {
       this.nickname = nickname;
     }
+
   }
   

@@ -30,7 +30,7 @@ export class AuthService {
         else {
                 await this.prisma.user.update({
                   where: { id: user.id },
-                  data: {},
+                  data: {state: 'ONLINE'},
                 })
                 const newToken = await this.generateAndSetAccessToken(user);
                 res.cookie("accessToken", newToken);
@@ -53,25 +53,28 @@ export class AuthService {
     }
 }
 
-async getAccessToken(code: string | undefined): Promise<any> {
-  if (code === undefined) {
-      throw new BadRequestException('Code is missing');
+async getAccessToken(code: string): Promise<any> {
+    try {
+        const response = await axios.post(process.env.TOKEN_42, {
+            client_id: client_id,
+            client_secret: clientSecret,
+            grant_type: "authorization_code",
+            code: code,
+            redirect_uri: redirect_url,
+        });
+        const accessToken = response.data.access_token;
+        return accessToken;
+    }
+    catch (error: any) {
+        if (error.response && error.response.data) {
+            console.error("Error from 42 API:", error.response.data);
+        } else {
+            console.error("Unexpected error:", error);
+        }
+        throw new HttpException('Failed to retrieve access token', HttpStatus.INTERNAL_SERVER_ERROR);
+    }    
   }
-
-  try {
-      const response = await axios.post(process.env.TOKEN_42, {
-          client_id: client_id,
-          client_secret: clientSecret,
-          grant_type: "authorization_code",
-          code: code,
-          redirect_uri: redirect_url,
-      });
-      const accessToken = response.data.access_token;
-      return accessToken;
-  } catch {
-      throw new HttpException('Failed to retrieve access token', HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-}
+  
 
 
 

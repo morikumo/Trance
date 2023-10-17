@@ -18,16 +18,14 @@ export class UserService {
       if (existingUser) {
         throw new HttpException('User with this email already exists', HttpStatus.CONFLICT);
        }
-       // Hasher le mot de passe avant de l'enregistrer
-       const hashedPassword = await bcrypt.hash(userData.password, 10); // 10 est le coût du hachage
- 
+       // Hasher le mot de passe avant de l'enregistrer 
       const user = await this.prisma.user.create({
         data: {
           id: userData.id,
           name: userData.name,
           email: userData.email,
-          //nickname: nickname,
-          password: hashedPassword,
+          nickname: userData.nickname,
+          state: userData.state,
         }
       });
       return user;

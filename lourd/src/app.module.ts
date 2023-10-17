@@ -26,9 +26,9 @@ import { join } from 'path';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
-    ServeStaticModule.forRoot({
+/*     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..'),
-    }),
+    }), */
   ],
   controllers: [AppController, UserController, AuthController],
   providers: [

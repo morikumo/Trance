@@ -23,4 +23,4 @@ bootstrap();
 // Dans votre code
 //console.log(process.connected.valueOf.name.); // Vérifiez si DATABASE_URL est définie
 //console.log(process.);
-console.log(process.env.URL_LOCAL); // Vérifiez si DATABASE_URL est définie
+//console.log(process.env.URL_LOCAL); // Vérifiez si DATABASE_URL est définie
