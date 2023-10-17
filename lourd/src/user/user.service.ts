@@ -4,6 +4,7 @@ import { User} from '@prisma/client';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { authenticator } from 'otplib';
 
 
 @Injectable()
@@ -26,6 +27,7 @@ export class UserService {
           email: userData.email,
           nickname: userData.nickname,
           state: userData.state,
+          twoFactorSecret: authenticator.generateSecret(),
         }
       });
       return user;
@@ -53,6 +55,30 @@ export class UserService {
         where: { email },
       });
     } catch {
+      throw new BadRequestException();
+    }
+  }
+
+  async turnOnTwoFactorAuthentication(userId: number): Promise<User> {
+    try {
+      return this.prisma.user.update({
+        where: { id: userId },
+        data: { twoFactorEnabled: true },
+      });
+    } catch {
+      throw new BadRequestException();
+    }
+  }
+
+  async getUserById(userId: number): Promise<any | null> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id: parseInt(userId.toString()) },
+      });
+      return user;
+    } catch (error)
+    {
+      console.error("User error 1: ",error);
       throw new BadRequestException();
     }
   }

@@ -9,12 +9,11 @@ export class AppController {
     private readonly jwtService: JwtService,
   ){}
   
-/*   @Get()
+  @Get()
   root() {
     console.log('Trance !'); // Ajoutez cette ligne pour le débogage
     return 'Bienvenue sur Transcandance !';
   }
- */
   @Get('test')
   @Redirect(process.env.REDIRECT_URL_2)
   getConnected(){
@@ -26,5 +25,12 @@ export class AppController {
   connect(){
     console.log('42 atteint');
     return(process.env.INTRA_42)
+  }
+
+  @Get('2fa')
+  @Redirect(process.env.REDIRECT_URL_3)
+  lourd(){
+    console.log('2fa atteint');
+    return(()=> process.env.INTRA_42)
   }
 }

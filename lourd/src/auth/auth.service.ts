@@ -10,7 +10,7 @@ config();
 const axios = require('axios');
 const client_id = process.env.UID_42;
 const clientSecret = process.env.SECRET_42;
-const redirect_url = process.env.URL_REDIRECT;
+const redirect_url = process.env.REDIRECT_URL;
 
 @Injectable()
 export class AuthService {
@@ -28,6 +28,10 @@ export class AuthService {
             res.redirect(`` + process.env.URL_LOCAL + `/setNickname?token=${token}`);
         }
         else {
+            if (user.twoFactorEnabled) {
+                res.redirect(`` + process.env.URL_LOCAL + `/2fa?id=${user.id}`);
+            }
+            else {
                 await this.prisma.user.update({
                   where: { id: user.id },
                   data: {state: 'ONLINE'},
@@ -36,6 +40,7 @@ export class AuthService {
                 res.cookie("accessToken", newToken);
                 res.redirect(process.env.URL_LOCAL + `/`);
             }
+        }
         return user;
     } catch {
         throw new BadRequestException();
@@ -76,8 +81,6 @@ async getAccessToken(code: string): Promise<any> {
   }
   
 
-
-
 async getUserData(accessToken: string): Promise<any> {
   try {
       const userResponse = await axios.get(process.env.URL_42ME, {
@@ -97,6 +100,18 @@ async getUserData(accessToken: string): Promise<any> {
   }
 }
 
+async apiConnexion2fa(user: User, res: Response): Promise<void> {
+    try {
+        if (!user)
+            throw new BadRequestException("user doesn't exist");
+        else {
+            const newToken = await this.generateAndSetAccessToken(user);
+            res.cookie("accessToken", newToken);
+        }
+    } catch {
+        throw new BadRequestException();
+    }
+}
 
   // Vous pouvez supprimer la méthode findByEmail car elle est maintenant intégrée dans validateUser
 }

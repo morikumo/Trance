@@ -16,12 +16,14 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { TwofaService } from './twofa/twofa.service';
+import { TwofaModule } from './twofa/twofa.module';
 
 
 
 @Module({
   imports: [
-    UserModule, PrismaModule, AuthModule, PassportModule.register({ defaultStrategy: 'jwt' }),
+    UserModule, PrismaModule, AuthModule, TwofaModule ,PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
@@ -32,7 +34,7 @@ import { join } from 'path';
   ],
   controllers: [AppController, UserController, AuthController],
   providers: [
-    PrismaService, AppService, AuthService, UserService, ConfigService, JwtStrategy],
+    PrismaService, AppService, AuthService, UserService, TwofaService ,ConfigService, JwtStrategy],
 })
 export class AppModule {}
 
