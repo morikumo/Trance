@@ -34,6 +34,10 @@ services:
       - postgres
     restart: unless-stopped
 
+  nestjs-shell:
+    image: node:18-alpine
+    entrypoint: /bin/sh
+
 
 volumes:
   postgres-data:

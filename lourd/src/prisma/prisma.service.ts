@@ -7,9 +7,14 @@ export class PrismaService extends PrismaClient {
     super({
       datasources: {
         db: {
-          url: process.env.DATABASE_URL,
-        },
-      },
+          url: process.env.DATABASE_URL
+        }
+      }
     });
+  
+    console.log(this.datasource);
+  }
+  datasource(_datasource: any) {
+    throw new Error('Method not implemented.');
   }
 }

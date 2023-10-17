@@ -16,7 +16,7 @@ run:
 
 # Exécuter npx prisma migrate : schema=./src/prisma/schema.prisma
 migrate:
-	npx prisma migrate dev --schema=./src/prisma/schema.prisma
+	npx prisma migrate deploy dev --schema=./src/prisma/schema.prisma
 
 client:
 	npx prisma generate --schema=./src/prisma/schema.prisma
