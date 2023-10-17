@@ -18,6 +18,9 @@ run:
 migrate:
 	npx prisma migrate dev --schema=./src/prisma/schema.prisma
 
+client:
+	npx prisma generate --schema=./src/prisma/schema.prisma
+
 # Ouvrir Prisma Studio
 studio:
 	npx prisma studio --schema=./src/prisma/schema.prisma

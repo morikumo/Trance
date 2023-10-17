@@ -71,15 +71,19 @@ export class UserService {
   }
 
   async getUserById(userId: number): Promise<any | null> {
+    if (!userId) {
+      throw new BadRequestException('User ID is missing');
+    }
+  
     try {
       const user = await this.prisma.user.findUnique({
         where: { id: parseInt(userId.toString()) },
       });
       return user;
-    } catch (error)
-    {
-      console.error("User error 1: ",error);
+    } catch (error) {
+      console.error("User error 1: ", error);
       throw new BadRequestException();
     }
   }
+  
 }

@@ -45,13 +45,17 @@ export class AuthController {
     }
     
 
-    @Get('connect2fa')
-    async connect2fa(@Req() req: any, @Res() res: any) {
-      try {
-        const code = req.query.code;
-        console.log("voici la valeur de code 1: ",code);
-        const id = req.query.id;
-        console.log("voici la valeur de id 2: ",id);
+@Get('connect2fa')
+async connect2fa(@Req() req: any, @Res() res: any) {
+  const code = req.query.code;
+  console.log("voici la valeur de code 1: ", code);
+  const id = req.query.id;
+  console.log("voici la valeur de id 2: ", id);
+
+  if (!code || !id) {
+    return res.status(400).send('Code or ID is missing');
+  }
+  try {
         const user = await this.UserService.getUserById(id);
         if (!user.twoFactorSecret || !user.twoFactorEnabled) {
           throw new BadRequestException('2Fa is not enabled for this user');
