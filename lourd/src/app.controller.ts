@@ -10,14 +10,14 @@ export class AppController {
   ){}
   
   @Get()
-  root() {
+  getHello(): string {
     console.log('Trance !'); // Ajoutez cette ligne pour le débogage
-    return 'Bienvenue sur Transcandance !';
+    return 'Bienvenue sur Transcandance et moi !';
   }
   @Get('test')
-  @Redirect(process.env.REDIRECT_URL_2)
+  @Redirect(process.env.REDIRECT_URL_2) //auth/test
   getConnected(){
-    return(()=> process.env.INTRA_42)
+    return(process.env.INTRA_42)
   }
 
   @Get('42')

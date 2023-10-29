@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -25,14 +25,6 @@ model User {
   twoFactorSecret   String          @unique
   twoFactorEnabled  Boolean         @default(false)
   state             UserState
-  posts             Post[]
 }
 
-model Post {
-  id                Int             @id @default(autoincrement())
-  title             String
-  content           String?
-  published         Boolean?        @default(false)
-  author            User?           @relation(fields: [authorId], references: [id])
-  authorId          Int?
-}
+

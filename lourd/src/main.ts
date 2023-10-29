@@ -6,6 +6,7 @@ import { config } from 'dotenv';
 import * as morgan from 'morgan';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 const { PrismaClient } = require('@prisma/client');
 
 
@@ -13,7 +14,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(morgan.default('dev'));
-  app.enableCors({ origin: process.env.URL_LOCAL, credentials: true });
+  app.enableCors({ origin: process.env.URL_LOCAL, 
+    credentials: true });
   app.use(cookieParser());
   app.use(passport.initialize());
   await app.listen(3001);

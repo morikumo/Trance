@@ -342,3 +342,11 @@ J'ai ajouté des dependances :
 >> npm install --save path
 >> npm install --save @nestjs/serve-static
 >> npm install --save 
+
+Etape 32 : Ca fait longtemps que je nai aps écrit ici. Le probleme était que j'ai des doubles requetes avec Google Chrome
+
+(Vous l'avez compris, il faut passer sur mozilla pour tester l'api)
+
+Etape 33 : Un probleme de dbe st fait depuis le depart, car il faut le lancer dans le conteneur
+
+(Il fallait donc changer l'url de la db et changer la partie localhost par la partie postgre ou le nom du conteneur gérant la db)

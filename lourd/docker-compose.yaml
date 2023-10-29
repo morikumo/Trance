@@ -33,6 +33,9 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
   nestjs-shell:
     image: node:18-alpine

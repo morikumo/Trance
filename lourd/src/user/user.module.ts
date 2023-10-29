@@ -1,10 +1,9 @@
-// user/user.module.ts
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
-import { PrismaModule } from '../prisma/prisma.module'; // Assurez-vous d'importer PrismaModule
 import { UserController } from './user.controller';
-import { JwtModule } from '@nestjs/jwt';
+import { PrismaModule } from '../prisma/prisma.module';
 import { PrismaService } from '../prisma/prisma.service';
+import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../strategy/jwt.strategy';
 
 @Module({
@@ -13,7 +12,6 @@ import { JwtStrategy } from '../strategy/jwt.strategy';
     secret: process.env.JWT_SECRET,
     signOptions: {expiresIn: '1d'},
   })],
-  providers: [UserService, PrismaService, JwtStrategy],
-  exports: [UserService],
+  providers: [UserService, PrismaService, JwtStrategy]
 })
 export class UserModule {}

@@ -21,26 +21,29 @@ export class AuthController {
     {}
 
     @Get('test')
-    connec(){
+    connec(@Req() req: Request, @Res() response: Response){
+      response.redirect("https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-aeba805b245ea71102f8f22a968dba17bf5d1a866dc5fe07bca7e32f61a5f496&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Flogin&response_type=code");
       console.log('42 atteint');
     }
 
     @Get('login')
-    async login(@Req() req: Request, @Res() response: Response): Promise<any> {
-      console.log("Login route hit");
+    async login(@Req() req: Request, @Res() response: Response) {
       const code = req.query.code;
-      console.log("voici la valeur de code : ",code);
+      //console.log("voici la valeur de code : ",code);
 
       if (!code) {
         throw new BadRequestException('Code is missing');}
 
       try {
-        const accessToken = await this.authService.getAccessToken(code);
-        const userData = await this.authService.getUserData(accessToken);
+        const accessToken = await this.authService.getAccessToken(code); //ok
+        //console.log("Pour login 1.voici la valeur de accessToken : ",accessToken); 
+        const userData = await this.authService.getUserData(accessToken, code); //N'arrive pas à recuperer code
+        console.log("Pour login 2.voici la valeur de userData : ",userData);
         await this.authService.apiConnexion(userData, accessToken, response);
+        //console.log("Pour login 3.voici la valeur de response : ",response);
       } catch (error){
-        console.error(error);
-        throw new BadRequestException();
+        console.log("La raison du probleme : ",error);
+        throw new BadRequestException(error);
       }
     }
     
@@ -51,10 +54,6 @@ async connect2fa(@Req() req: any, @Res() res: any) {
   console.log("voici la valeur de code 1: ", code);
   const id = req.query.id;
   console.log("voici la valeur de id 2: ", id);
-
-  if (!code || !id) {
-    return res.status(400).send('Code or ID is missing');
-  }
   try {
         const user = await this.UserService.getUserById(id);
         if (!user.twoFactorSecret || !user.twoFactorEnabled) {

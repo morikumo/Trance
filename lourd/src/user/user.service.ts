@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User} from '@prisma/client';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { authenticator } from 'otplib';
 
@@ -11,7 +10,7 @@ import { authenticator } from 'otplib';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(userData: CreateUserDto, nickname: string): Promise<User> {
+  async createUser(userData: any, nickname: string): Promise<User> {
     try {
        // Vérifiez si un utilisateur avec le même e-mail existe déjà
       const existingUser = await this.prisma.user.findUnique({ where: { email: userData.email } });
