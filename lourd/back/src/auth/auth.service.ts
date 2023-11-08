@@ -23,12 +23,12 @@ export class AuthService {
     private TwofaService: TwofaService,
   ) {}
 
-  async apiConnexion(userData: any, token: any, res: Response): Promise<User | any> {
+  async apiConnexion(userData: any, token: any, res: Response): Promise<User | null> {
     try {
         //console.log("1. APICONNEXION userData: ", userData);
         //console.log("2. APICONNEXION token: ", token);
 
-        const user = await this.prisma.user.findUnique({ where: { email: userData.email } });
+        let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
         console.log("2. APICONNEXION token: ", token);
         //console.log("3. APICONNEXION user: ", user);
         console.log("4. APICONNEXION user: ", user);
