@@ -350,3 +350,13 @@ Etape 32 : Ca fait longtemps que je nai aps écrit ici. Le probleme était que j
 Etape 33 : Un probleme de dbe st fait depuis le depart, car il faut le lancer dans le conteneur
 
 (Il fallait donc changer l'url de la db et changer la partie localhost par la partie postgre ou le nom du conteneur gérant la db)
+
+Etape 34 : Probleme avec patch 
+
+(curl -X PATCH http://localhost:3001/user/setNickname \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer YOUR_TOKEN_HERE" \
+-d '{"nickname": "newNickname"}'
+)
+
+Faire cette commande pour tester la requete 

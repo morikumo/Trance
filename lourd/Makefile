@@ -15,14 +15,14 @@ run:
 
 # Exécuter npx prisma migrate : schema=./src/prisma/schema.prisma
 migrate:
-	npx prisma migrate deploy dev --schema=./src/prisma/schema.prisma
+	npx prisma migrate deploy dev --schema=./back/src/prisma/schema.prisma
 
 client:
-	npx prisma generate --schema=./src/prisma/schema.prisma
+	npx prisma generate --schema=./back/src/prisma/schema.prisma
 
 # Ouvrir Prisma Studio
 studio:
-	npx prisma studio --schema=./src/prisma/schema.prisma
+	npx prisma studio --schema=./back/src/prisma/schema.prisma
 
 # Relancer le projet
 re: fclean all
