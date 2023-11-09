@@ -31,14 +31,14 @@ let AuthService = class AuthService {
     }
     async apiConnexion(userData, token, res) {
         try {
-            //console.log("1. APICONNEXION userData: ", userData);
+            console.log("1. APICONNEXION userData: ", userData);
             //console.log("2. APICONNEXION token: ", token);
             let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
             console.log("2. APICONNEXION token: ", token);
             //console.log("3. APICONNEXION user: ", user);
             console.log("4. APICONNEXION user: ", user);
             if (!user) {
-                // console.log("Avant la redirection");            
+                // console.log("Avant la redirection");
                 res.redirect(`` + process.env.URL_LOCAL + `/user/setNickname?token=${token}`);
             }
             else {
@@ -46,15 +46,15 @@ let AuthService = class AuthService {
                     res.redirect(`` + process.env.URL_LOCAL + `/2fa?id=${user.id}`);
                 }
                 else {
-                    console.log("YEEEEEEEEEEEA ");
+                    //console.log("YEEEEEEEEEEEA ");
                     await this.prisma.user.update({
                         where: { id: user.id },
                         data: { state: 'ONLINE' },
                     });
-                    console.log("user: ", this.prisma.user);
+                    // console.log("user: ", this.prisma.user);
                     const newToken = await this.generateAndSetAccessToken(user);
                     res.cookie("accessToken", newToken);
-                    console.log("newToken: ", newToken);
+                    //console.log("newToken: ", newToken);
                     res.redirect(process.env.URL_LOCAL + `/`);
                 }
             }

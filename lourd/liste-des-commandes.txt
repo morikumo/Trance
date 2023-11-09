@@ -360,3 +360,7 @@ Etape 34 : Probleme avec patch
 )
 
 Faire cette commande pour tester la requete 
+
+
+PATCH ne fonctionnera pas sans un formulaire front, on va donc passer par le back avec get, car res.redirect retourne toujours un get.
+Or on a une erreur Unautorized de la part de JWT, qui 

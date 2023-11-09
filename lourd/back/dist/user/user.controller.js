@@ -29,35 +29,61 @@ let UserController = class UserController {
         this.JwtService = JwtService;
         this.prisma = prisma;
     }
-    async setNickname(user, body) {
-        //1
-        try {
+    /*     @Patch('setNickname')
+        @UseGuards(JwtAuthenticationGuard)
+        async setNickname(@GetUser() user: any, @Body() body: { nickname: string }) {
+           //1
+          try {
+    
             const { nickname } = body;
             console.log("1. setNickname nickname: ", nickname);
             if (!nickname)
-                throw new common_1.BadRequestException();
-            const regex = /^[a-zA-Z0-9\s\-\_]{2,20}$/;
+              throw new BadRequestException();
+            const regex: RegExp = /^[a-zA-Z0-9\s\-\_]{2,20}$/;
             if (!regex.test(nickname))
-                throw new common_1.BadRequestException();
+              throw new BadRequestException();
+            const userUpdate = await this.prisma.user.update({
+              where: { id: user.id },
+              data: { nickname: nickname },
+            });
+            return { message: 'Surnom enregistré avec succès' };
+          } catch {
+            throw new BadRequestException();
+          }
+        } */
+    async setNickname(user, nickname) {
+        try {
+            nickname = "N";
+            console.log("1. setNickname nickname: ", nickname);
+            if (!nickname)
+                throw new common_1.BadRequestException('Nickname is required');
+            const regex = /^[a-zA-Z0-9\s\-\_]{2,10}$/;
+            if (!regex.test(nickname))
+                throw new common_1.BadRequestException('Invalid nickname format');
+            console.log("On est ici ! ");
+            console.log(await this.prisma.user.update({
+                where: { id: user.id },
+                data: { nickname: nickname },
+            }));
             const userUpdate = await this.prisma.user.update({
                 where: { id: user.id },
                 data: { nickname: nickname },
             });
             return { message: 'Surnom enregistré avec succès' };
         }
-        catch (_a) {
-            throw new common_1.BadRequestException();
+        catch (error) {
+            throw new common_1.BadRequestException(error);
         }
     }
 };
 exports.UserController = UserController;
 __decorate([
-    (0, common_1.Patch)('setNickname'),
+    (0, common_1.Get)('setNickname'),
     (0, common_1.UseGuards)(jwt_guard_guard_1.default),
     __param(0, (0, get_user_decorator_1.GetUser)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Query)('nickname')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "setNickname", null);
 exports.UserController = UserController = __decorate([

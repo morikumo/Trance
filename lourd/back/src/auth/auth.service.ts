@@ -25,7 +25,7 @@ export class AuthService {
 
   async apiConnexion(userData: any, token: any, res: Response): Promise<User | null> {
     try {
-        //console.log("1. APICONNEXION userData: ", userData);
+        console.log("1. APICONNEXION userData: ", userData);
         //console.log("2. APICONNEXION token: ", token);
 
         let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
@@ -33,7 +33,7 @@ export class AuthService {
         //console.log("3. APICONNEXION user: ", user);
         console.log("4. APICONNEXION user: ", user);
         if (!user) {
-           // console.log("Avant la redirection");            
+           // console.log("Avant la redirection");
             res.redirect(`` + process.env.URL_LOCAL + `/user/setNickname?token=${token}`);
         }
         else {
@@ -41,15 +41,15 @@ export class AuthService {
                 res.redirect(`` + process.env.URL_LOCAL + `/2fa?id=${user.id}`);
             }
             else {
-            console.log("YEEEEEEEEEEEA ");
+            //console.log("YEEEEEEEEEEEA ");
                 await this.prisma.user.update({
                   where: { id: user.id },
                   data: {state: 'ONLINE'},
                 })
-               console.log("user: ", this.prisma.user);
+              // console.log("user: ", this.prisma.user);
                 const newToken = await this.generateAndSetAccessToken(user);
                 res.cookie("accessToken", newToken);
-                console.log("newToken: ", newToken);
+                //console.log("newToken: ", newToken);
                 res.redirect(process.env.URL_LOCAL + `/`);
             }
         }

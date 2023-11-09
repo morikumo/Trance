@@ -51,7 +51,7 @@ services:
 #      - backend
 #    restart: unless-stopped
 #    volumes:
-#      - .:/usr/src/app
+#      - ./front:/usr/src/app
 #      - /usr/src/app/node_modules
 
   nestjs-shell:
