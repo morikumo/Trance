@@ -53,7 +53,7 @@ let UserController = class UserController {
         } */
     async setNickname(user, nickname) {
         try {
-            nickname = "N";
+            nickname = "Nickname";
             console.log("1. setNickname nickname: ", nickname);
             if (!nickname)
                 throw new common_1.BadRequestException('Nickname is required');

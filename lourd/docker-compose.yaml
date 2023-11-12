@@ -54,11 +54,6 @@ services:
 #      - ./front:/usr/src/app
 #      - /usr/src/app/node_modules
 
-  nestjs-shell:
-    image: node:18-alpine
-    entrypoint: /bin/sh
-
-
 volumes:
   postgres-data:
 

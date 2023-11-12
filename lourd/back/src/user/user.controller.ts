@@ -41,7 +41,7 @@ export class UserController {
     @UseGuards(JwtAuthenticationGuard)
     async setNickname(@GetUser() user: any, @Query('nickname') nickname: string) {
       try {
-        nickname = "N";
+        nickname = "Nickname";
         console.log("1. setNickname nickname: ", nickname);
         if (!nickname) throw new BadRequestException('Nickname is required');
         const regex: RegExp = /^[a-zA-Z0-9\s\-\_]{2,10}$/;
