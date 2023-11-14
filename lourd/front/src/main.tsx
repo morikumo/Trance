@@ -19,7 +19,7 @@ root.render(
 	<React.StrictMode>
 		<Router>
 			<GlobalStyle />
-			<GameProvider children={undefined}>
+			<GameProvider >
 				<SoundProvider>
 					<WindowSize />
 					<Header />
@@ -29,7 +29,6 @@ root.render(
 						<Route path="/game" element={<Game />} />
 						<Route path="/chat" element={<Chat />} />
 						<Route path="/profile" element={<Profile />} />
-						<Route path="/setNickname" element={<SetNickname />} />
 					</Routes>
 					<Footer />
 				</SoundProvider>
