@@ -10,9 +10,8 @@ export class AppController {
   ){}
   
   @Get()
-  getHello(): string {
-    console.log('Trance !'); // Ajoutez cette ligne pour le débogage
-    return 'Bienvenue sur Transcandance ';
+  @Redirect('' + process.env.URL_LOCAL_FRONT + '/') //auth
+  Bienvenue(){
   }
   @Get('test')
   @Redirect(process.env.REDIRECT_URL_2) //auth/test

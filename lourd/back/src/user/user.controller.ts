@@ -14,12 +14,10 @@ export class UserController {
     private readonly JwtService: JwtService,
     private readonly prisma: PrismaService) {}
 
-/*     @Patch('setNickname')
+    @Patch('setNickname')
     @UseGuards(JwtAuthenticationGuard)
     async setNickname(@GetUser() user: any, @Body() body: { nickname: string }) { 
-       //1
       try {
-
         const { nickname } = body;
         console.log("1. setNickname nickname: ", nickname);
         if (!nickname)
@@ -35,9 +33,9 @@ export class UserController {
       } catch {
         throw new BadRequestException();
       }
-    } */
+    }
 
-    @Get('setNickname')
+/*     @Get('setNickname')
     @UseGuards(JwtAuthenticationGuard)
     async setNickname(@GetUser() user: any, @Query('nickname') nickname: string) {
       try {
@@ -62,5 +60,5 @@ export class UserController {
       } catch (error) {
         throw new BadRequestException(error);
       }
-    }
-}
+    }*/
+} 

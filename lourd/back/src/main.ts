@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(morgan.default('dev'));
-  app.enableCors({ origin: process.env.URL_LOCAL, 
+  app.enableCors({ origin: process.env.URL_LOCAL_FRONT, 
     credentials: true });
   app.use(cookieParser());
   app.use(passport.initialize());

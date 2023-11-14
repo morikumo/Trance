@@ -18,9 +18,7 @@ let AppController = class AppController {
         this.prisma = prisma;
         this.jwtService = jwtService;
     }
-    getHello() {
-        console.log('Trance !'); // Ajoutez cette ligne pour le débogage
-        return 'Bienvenue sur Transcandance ';
+    Bienvenue() {
     }
     getConnected() {
         console.log('test atteint');
@@ -38,10 +36,12 @@ let AppController = class AppController {
 exports.AppController = AppController;
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Redirect)('' + process.env.URL_LOCAL_FRONT + '/') //auth
+    ,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getHello", null);
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "Bienvenue", null);
 __decorate([
     (0, common_1.Get)('test'),
     (0, common_1.Redirect)(process.env.REDIRECT_URL_2) //auth/test

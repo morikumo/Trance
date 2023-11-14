@@ -1,6 +1,6 @@
 // auth.controller.ts
 
-import { Controller, Post, Body, Get, BadRequestException, Req, Res, Redirect } from '@nestjs/common';
+import { Controller, Post, Body, Get, BadRequestException, Req, Res, Redirect, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -37,7 +37,7 @@ export class AuthController {
       try {
         const accessToken = await this.authService.getAccessToken(code); //ok
         //console.log("Pour login 1.voici la valeur de accessToken : ",accessToken); 
-        const userData = await this.authService.getUserData(accessToken, code); 
+        const userData = await this.authService.getUserData(accessToken); 
         //console.log("Pour login 2.voici la valeur de userData : ",userData);
         await this.authService.apiConnexion(userData, accessToken, response);
         //console.log("Pour login 3.voici la valeur de response : ",response);
@@ -46,7 +46,23 @@ export class AuthController {
         throw new BadRequestException(error);
       }
     }
-    
+
+    @Patch('checkNickname')
+    async checkNickname(@Res() res: Response, @Body() body: { nickname: string, token: string }) {
+      const { nickname, token } = body;
+      try {
+        const user = await this.prisma.user.findUnique({ where: { nickname: nickname } });
+        if (user !== null) {
+          throw new BadRequestException("already used");
+        }
+        const regex: RegExp = /^[a-zA-Z0-9\s\-\_]{2,20}$/;
+        if (!regex.test(nickname))
+          throw new BadRequestException("wrong regex");
+        await this.authService.connexionPostNickname(token, nickname, res);
+      } catch (err) {
+        throw err;
+      }
+    }
 
 @Get('connect2fa')
 async connect2fa(@Req() req: any, @Res() res: any) {

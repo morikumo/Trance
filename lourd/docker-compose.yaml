@@ -1,8 +1,11 @@
 version: '3.3'
 
 networks:
-  lourd:
+  back-db:
     driver: bridge
+  back-front:
+    driver: bridge
+  
 
 services:
   postgres:
@@ -14,7 +17,7 @@ services:
     env_file:
       - .env
     networks:
-      - lourd
+      - back-db
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
@@ -29,13 +32,26 @@ services:
       - '3001:3001'
       - '5555:5555'
     networks:
-      - lourd
+      - back-db
+      - back-front
     depends_on:
       - postgres
     restart: unless-stopped
     volumes:
       - ./back:/usr/src/app
       - /usr/src/app/node_modules
+    
+  nick:
+    build:
+      context: ./bien
+      target: bien-build
+    ports:
+      - '3000:3000'
+    networks:
+      - back-front
+    depends_on:
+      - backend
+    restart: unless-stopped
 
 #  frontend:
 #    build:
@@ -46,7 +62,7 @@ services:
 #    ports:
 #      - '3000:3000'
 #    networks:
-#      - lourd
+#      - back-front
 #    depends_on:
 #      - backend
 #    restart: unless-stopped

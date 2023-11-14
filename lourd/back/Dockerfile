@@ -4,7 +4,7 @@ FROM node:18-alpine as back-build
 # Créez le répertoire de travail
 WORKDIR /usr/src/app
 
-RUN npm install -g npm@10.1.0 @nestjs/cli
+RUN npm install -g npm@10.2.3 @nestjs/cli
 
 # Copiez les fichiers de configuration
 COPY package*.json ./

@@ -41,7 +41,7 @@ let AuthController = class AuthController {
         try {
             const accessToken = await this.authService.getAccessToken(code); //ok
             //console.log("Pour login 1.voici la valeur de accessToken : ",accessToken); 
-            const userData = await this.authService.getUserData(accessToken, code);
+            const userData = await this.authService.getUserData(accessToken);
             //console.log("Pour login 2.voici la valeur de userData : ",userData);
             await this.authService.apiConnexion(userData, accessToken, response);
             //console.log("Pour login 3.voici la valeur de response : ",response);
@@ -49,6 +49,22 @@ let AuthController = class AuthController {
         catch (error) {
             console.log("La raison du probleme : ", error);
             throw new common_1.BadRequestException(error);
+        }
+    }
+    async checkNickname(res, body) {
+        const { nickname, token } = body;
+        try {
+            const user = await this.prisma.user.findUnique({ where: { nickname: nickname } });
+            if (user !== null) {
+                throw new common_1.BadRequestException("already used");
+            }
+            const regex = /^[a-zA-Z0-9\s\-\_]{2,20}$/;
+            if (!regex.test(nickname))
+                throw new common_1.BadRequestException("wrong regex");
+            await this.authService.connexionPostNickname(token, nickname, res);
+        }
+        catch (err) {
+            throw err;
         }
     }
     async connect2fa(req, res) {
@@ -94,6 +110,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Patch)('checkNickname'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "checkNickname", null);
 __decorate([
     (0, common_1.Get)('connect2fa'),
     __param(0, (0, common_1.Req)()),

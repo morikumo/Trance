@@ -32,18 +32,14 @@ let AuthService = class AuthService {
     async apiConnexion(userData, token, res) {
         try {
             console.log("1. APICONNEXION userData: ", userData);
-            //console.log("2. APICONNEXION token: ", token);
-            let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
             console.log("2. APICONNEXION token: ", token);
-            //console.log("3. APICONNEXION user: ", user);
-            console.log("4. APICONNEXION user: ", user);
+            let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
             if (!user) {
-                // console.log("Avant la redirection");
-                res.redirect(`` + process.env.URL_LOCAL + `/user/setNickname?token=${token}`);
+                res.redirect(`` + process.env.URL_LOCAL_FRONT + `/setNickname?token=${token}`); //Vers le front
             }
             else {
                 if (user.twoFactorEnabled) {
-                    res.redirect(`` + process.env.URL_LOCAL + `/2fa?id=${user.id}`);
+                    res.redirect(`` + process.env.URL_LOCAL_FRONT + `/2fa?id=${user.id}`);
                 }
                 else {
                     //console.log("YEEEEEEEEEEEA ");
@@ -88,7 +84,14 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Failed to retrieve access token', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async getUserData(accessToken, code) {
+    async connexionPostNickname(token, nickname, res) {
+        const userData = await this.getUserData(token);
+        const user = await this.userService.createUser(userData, nickname);
+        const newToken = await this.generateAndSetAccessToken(user);
+        res.cookie("accessToken", newToken);
+        res.status(200).json({ message: 'Connexion réussie' });
+    }
+    async getUserData(accessToken) {
         try {
             const userResponse = await axios.get(process.env.ME_42, {
                 headers: {
@@ -99,12 +102,12 @@ let AuthService = class AuthService {
                 id: userResponse.data.id,
                 name: userResponse.data.login,
                 email: userResponse.data.email,
-                code: code,
+                code: userResponse.data.code,
                 pfp: userResponse.data.image.link,
             };
         }
         catch (_a) {
-            throw new common_1.HttpException('Failed to retrieve user data', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new common_1.HttpException('Failed to get user data', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     async generateAndSetAccessToken(user) {

@@ -26,19 +26,15 @@ export class AuthService {
   async apiConnexion(userData: any, token: any, res: Response): Promise<User | null> {
     try {
         console.log("1. APICONNEXION userData: ", userData);
-        //console.log("2. APICONNEXION token: ", token);
+        console.log("2. APICONNEXION token: ", token);
 
         let user = await this.prisma.user.findUnique({ where: { email: userData.email } });
-        console.log("2. APICONNEXION token: ", token);
-        //console.log("3. APICONNEXION user: ", user);
-        console.log("4. APICONNEXION user: ", user);
         if (!user) {
-           // console.log("Avant la redirection");
-            res.redirect(`` + process.env.URL_LOCAL + `/user/setNickname?token=${token}`);
+            res.redirect(`` + process.env.URL_LOCAL_FRONT + `/setNickname?token=${token}`); //Vers le front
         }
         else {
             if (user.twoFactorEnabled) {
-                res.redirect(`` + process.env.URL_LOCAL + `/2fa?id=${user.id}`);
+                res.redirect(`` + process.env.URL_LOCAL_FRONT + `/2fa?id=${user.id}`);
             }
             else {
             //console.log("YEEEEEEEEEEEA ");
@@ -82,9 +78,16 @@ export class AuthService {
         throw new HttpException('Failed to retrieve access token', HttpStatus.INTERNAL_SERVER_ERROR);
     }    
   }
-  
 
-  async getUserData(accessToken: string , code: string): Promise<any> {
+async connexionPostNickname(token: string, nickname: string, res: Response) {
+    const userData = await this.getUserData(token);
+    const user = await this.userService.createUser(userData, nickname);
+    const newToken = await this.generateAndSetAccessToken(user);
+    res.cookie("accessToken", newToken);
+    res.status(200).json({ message: 'Connexion réussie' });
+}
+
+async getUserData(accessToken: string): Promise<any> {
     try {
         const userResponse = await axios.get(process.env.ME_42, {
             headers: {
@@ -95,15 +98,15 @@ export class AuthService {
             id: userResponse.data.id,
             name: userResponse.data.login,
             email: userResponse.data.email,
-            code: code,
+            code: userResponse.data.code,
             pfp: userResponse.data.image.link,
         };
     } catch {
-        throw new HttpException('Failed to retrieve user data', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException('Failed to get user data', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
+}
 
-  async generateAndSetAccessToken(user: User): Promise<string> {
+async generateAndSetAccessToken(user: User): Promise<string> {
     try {
         const jwtPayload = { username: user.name, sub: user.id };
         //console.log("jwtPayload: ", jwtPayload);
@@ -114,9 +117,6 @@ export class AuthService {
         throw new BadRequestException();
     }
 }
-
-
-
 
 async apiConnexion2fa(user: User, res: Response): Promise<void> {
     try {

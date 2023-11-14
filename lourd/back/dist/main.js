@@ -36,7 +36,7 @@ const { PrismaClient } = require('@prisma/client');
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(morgan.default('dev'));
-    app.enableCors({ origin: process.env.URL_LOCAL,
+    app.enableCors({ origin: process.env.URL_LOCAL_FRONT,
         credentials: true });
     app.use((0, cookie_parser_1.default)());
     app.use(passport_1.default.initialize());
