@@ -1,15 +1,7 @@
-FROM node:18-alpine as front-build
-
-WORKDIR /usr/src/app
-
-RUN npm install -g serve
-
-COPY package*.json ./
-
-RUN npm install -g npm@10.1.0 \
-    && npm install --omit=dev --legacy-peer-deps
-
-COPY . .
-
-# RUN npm run build
+# Étape de build
+FROM node:16-alpine  AS front-build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . ./
 ENTRYPOINT [ "npm", "start" ]

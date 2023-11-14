@@ -1,7 +1,7 @@
 # Cible par défaut : docker-compose up --build
 all:
-	terminator -e "docker-compose up --build"
-#docker-compose up --build
+#terminator -e "docker-compose up --build"
+	docker-compose up --build
 
 #(while ! docker ps | grep -q "10 seconds ago" ; do sleep 1; done)
 #terminator -e "watch docker ps"
