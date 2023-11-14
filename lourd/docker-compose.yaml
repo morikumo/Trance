@@ -21,7 +21,6 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-
   backend:
     build:
       context: ./back
@@ -41,7 +40,7 @@ services:
       - ./back:/usr/src/app
       - /usr/src/app/node_modules
     
-  nick:
+  bien:
     build:
       context: ./bien
       target: bien-build

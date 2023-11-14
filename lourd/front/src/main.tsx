@@ -19,7 +19,7 @@ root.render(
 	<React.StrictMode>
 		<Router>
 			<GlobalStyle />
-			<GameProvider>
+			<GameProvider children={undefined}>
 				<SoundProvider>
 					<WindowSize />
 					<Header />

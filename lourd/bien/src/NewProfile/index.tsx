@@ -6,7 +6,7 @@ import Cookie from 'js-cookie';
 import './NewProfile.css'
 
 
-import Form from "../Form/Form"
+import Form from "../Form"
 
 export default function NewProfile() {
 	const token = Cookie.get('accessToken');

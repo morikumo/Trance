@@ -5,7 +5,7 @@ const Bienvenue = () => {
   const redirectToTest = () => {
     window.location.href = 'http://localhost:3001/test';
   };
-
+  console.log("test");
   return (
     <div className="bienvenue">
       <h1>Bienvenue sur notre application!</h1>
